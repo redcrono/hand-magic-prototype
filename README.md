@@ -3,6 +3,8 @@
 카메라로 양손을 읽어, 손동작만으로 주문을 발동하는 미니게임 프로토타입입니다.
 단일 HTML 파일(`index.html`)로 동작하며, 서버·빌드 과정이 필요 없습니다.
 
+![손짓 마법사 시작 화면](preview.png)
+
 - **라이브 데모 (HTTPS, 아이폰 카메라 사용 가능):** https://redcrono.github.io/hand-magic-prototype/
 - **저장소:** https://github.com/redcrono/hand-magic-prototype
 
