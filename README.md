@@ -42,7 +42,7 @@ https://redcrono.github.io/hand-magic-prototype/ — HTTPS라서 아이폰 사�
 ### 2) 내 컴퓨터에서 로컬 실행
 
 ```bash
-cd projects/hand-magic
+# index.html이 있는 폴더에서
 python3 -m http.server 8000
 ```
 
@@ -90,9 +90,9 @@ python3 -m http.server 8000
 ## 파일
 
 ```
-projects/hand-magic/
-  index.html   # 게임 전체 (HTML + CSS + JS 단일 파일)
-  README.md    # 이 문서
+index.html    # 게임 전체 (HTML + CSS + JS 단일 파일)
+README.md     # 이 문서
+preview.jpg   # 시작 화면 미리보기
 ```
 
 ## 크레딧
