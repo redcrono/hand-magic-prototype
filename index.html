@@ -296,12 +296,18 @@
     width:32px;height:32px;border-radius:10px;border:1px solid var(--line);
     background:rgba(255,255,255,.04);color:var(--text);font-size:15px;cursor:pointer;
   }
-  .sheet section{padding:6px 16px 0}
-  .sheet h3{
-    margin:14px 0 8px;font-size:10px;letter-spacing:.24em;color:var(--dim2);font-weight:700;
-    display:flex;align-items:center;gap:8px;
+  .sheet details{border-top:1px solid var(--line-soft)}
+  .sheet details:first-of-type{border-top:none}
+  .sheet summary{
+    list-style:none;cursor:pointer;margin:0;padding:15px 16px 9px;
+    font-size:10px;letter-spacing:.24em;color:var(--dim2);font-weight:700;
+    display:flex;align-items:center;gap:8px;user-select:none;
   }
-  .sheet h3:after{content:"";flex:1;height:1px;background:var(--line-soft)}
+  .sheet summary::-webkit-details-marker{display:none}
+  .sheet summary:after{content:"";flex:1;height:1px;background:var(--line-soft)}
+  .sheet summary i{font-style:normal;font-size:8.5px;letter-spacing:.08em;opacity:.55}
+  .sheet details[open] summary{color:var(--dim)}
+  .sheet details > div,.sheet details > p{padding:0 16px}
   .srow{
     display:flex;gap:11px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line-soft);
   }
@@ -348,15 +354,6 @@
     box-shadow:0 10px 30px rgba(0,0,0,.5);
   }
   #toast.on{opacity:1;transform:translate(-50%,0) scale(1)}
-
-  #countdown{
-    position:fixed;inset:0;z-index:18;display:grid;place-items:center;pointer-events:none;
-    font-family:the serif;font-size:0;background:rgba(2,4,8,.35);
-  }
-  #countNum{
-    font-family:var(--serif);font-size:76px;color:#fff;letter-spacing:.06em;
-    text-shadow:0 0 40px rgba(255,83,64,.7);animation:pop .5s ease
-  }
 
   @keyframes stamp{
     0%{opacity:0;transform:scale(2) rotate(-14deg);filter:blur(2px)}
@@ -443,7 +440,6 @@
   </div>
 </div>
 
-<div id="countdown" class="hidden"><span id="countNum">3</span></div>
 <div id="toast"></div>
 
 <div id="startScreen" class="overlay">
@@ -472,23 +468,23 @@
       </div>
       <button id="bookClose" class="closebtn" type="button" aria-label="닫기">✕</button>
     </div>
-    <section>
-      <h3>인 맺기 · 六印</h3>
+    <details class="sec" open>
+      <summary>인 맺기 · 六印 <i>탭해서 접기</i></summary>
       <div id="sealList"></div>
-    </section>
-    <section>
-      <h3>술법 · 術</h3>
+    </details>
+    <details class="sec" open>
+      <summary>술법 · 術 <i>탭해서 접기</i></summary>
       <div id="jutsuList"></div>
-    </section>
-    <section>
-      <h3>요령</h3>
+    </details>
+    <details class="sec">
+      <summary>요령 <i>탭해서 펼치기</i></summary>
       <p style="font-size:11px;line-height:1.7;color:var(--dim);margin:0 0 8px">
         · 두 손을 <b style="color:#fff">화면 안에서 겹치거나 맞대면</b> 인으로 인식합니다. 손가락이 서로 가려도 0.6초 동안은 마지막 위치로 이어서 판정합니다.<br>
         · 인식되면 위쪽 <b style="color:#fff">인 배지</b>에 칸지와 확신도가 차오르고, 0.2초쯤 유지하면 <b style="color:#fff">인</b>이 확정됩니다.<br>
         · 순서를 이으면 술법이 발동합니다. 순서가 틀리면 처음부터 다시 맺으세요.<br>
         · 아이폰에서는 <b style="color:#fff">🐞 디버그</b>를 켜 두면 어떤 인이 얼마나 잘 잡히는지 볼 수 있습니다.
       </p>
-    </section>
+    </details>
     <div class="sheet-foot">
       <button id="bookReset" class="mini" type="button">인식 기록 초기화</button>
       <button id="bookDone" class="mini" type="button" style="background:rgba(255,83,64,.9);border-color:transparent;font-weight:700">닫기</button>
@@ -1123,7 +1119,7 @@
       out.in = clamp(pat * near * (0.34 + 0.66 * sideBySide) * (0.38 + 0.62 * parallel) * ghost, 0, 1);
 
       /* 午 · 오 — 검지 끝만 맞대고 손을 비스듬히 (세모) */
-      var tipsTouch = band(dIdx, 0.0, 0.62, 0.42);
+      var tipsTouch = band(dIdx, 0.0, 0.74, 0.45);
       var wide = ramp(wristD, 1.0, 2.1);
       var angled = invRamp(axisDot, 0.12, 0.78);
       var upBoth = Math.min(pVert(A), pVert(B));
@@ -1166,7 +1162,7 @@
 
     /* --------------------------- seal locking --------------------------- */
     var LOCK_CONF = 0.56;
-    var HOLD_TIME = 0.19;
+    var HOLD_TIME = 0.22;
     var RELEASE_CONF = 0.37;
 
     function handMid() {
@@ -1572,7 +1568,7 @@
     /* --------------------------- particles / fx helpers --------------------------- */
     function burst(x, y, n, color, speed, opts) {
       opts = opts || {};
-      var room = 340 - S.parts.length;
+      var room = 300 - S.parts.length;
       n = Math.min(n, Math.max(0, room));
       for (var i = 0; i < n; i++) {
         var a = rnd(0, TAU), sp = rnd(0.25, 1) * speed;
@@ -2374,6 +2370,22 @@
     }
 
     /* --------------------------- overlays draw --------------------------- */
+    var glowCache = {};
+    function glowSprite(color) {
+      if (glowCache[color]) return glowCache[color];
+      var c = document.createElement('canvas');
+      c.width = c.height = 64;
+      var g = c.getContext('2d');
+      var grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+      grd.addColorStop(0, 'rgba(' + color + ',1)');
+      grd.addColorStop(.42, 'rgba(' + color + ',.55)');
+      grd.addColorStop(1, 'rgba(' + color + ',0)');
+      g.fillStyle = grd;
+      g.fillRect(0, 0, 64, 64);
+      glowCache[color] = c;
+      return c;
+    }
+
     function drawParticles() {
       ctx.save();
       ctx.globalCompositeOperation = 'lighter';
@@ -2381,13 +2393,11 @@
         var p = S.parts[i];
         var a = clamp(p.life / p.max, 0, 1);
         if (p.glow) {
-          var g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 2.6);
-          g.addColorStop(0, 'rgba(' + p.color + ',' + (a * 0.85) + ')');
-          g.addColorStop(1, 'rgba(' + p.color + ',0)');
-          ctx.fillStyle = g;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size * 2.6, 0, TAU);
-          ctx.fill();
+          var sp = glowSprite(p.color);
+          var rr = p.size * 2.6;
+          ctx.globalAlpha = a * 0.85;
+          ctx.drawImage(sp, p.x - rr, p.y - rr, rr * 2, rr * 2);
+          ctx.globalAlpha = 1;
         } else {
           ctx.fillStyle = 'rgba(' + p.color + ',' + (a * 0.75) + ')';
           ctx.beginPath();
