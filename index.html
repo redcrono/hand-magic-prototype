@@ -2882,6 +2882,8 @@
 
     function openBook() {
       if (S.mode !== 'play') return;
+      var tst = $('#toast');
+      if (tst) tst.classList.remove('on');
       S.mode = 'book';
       updateBookCounts();
       show($('#bookScreen'));
